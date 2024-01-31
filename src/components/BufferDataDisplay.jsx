@@ -1,7 +1,7 @@
 import { Box, Paper, Typography, Button } from "@mui/material";
 import { useState } from "react";
 
-function BufferDataDisplay({height, width}) {
+function BufferDataDisplay({ height, width }) {
     const [activeDisplay, setActiveDisplay] = useState('read');
 
     return (
@@ -9,7 +9,7 @@ function BufferDataDisplay({height, width}) {
             sx={{
                 width: `${width}%`,
                 height: `${height}%`,
-                marginY:'auto',
+                marginY: 'auto',
                 backgroundColor: '#C7F2FF',
                 borderRadius: 3,
                 padding: 3,
@@ -104,7 +104,7 @@ function BufferDataDisplay({height, width}) {
                         border: '3px solid #E4E4E4',
                         borderRadius: 2,
                         '@media (max-width: 800px)': {
-                            height:'60%'
+                            height: '60%'
                         }
                     }}
                 >
@@ -124,6 +124,11 @@ function BufferDataDisplay({height, width}) {
                             color: '#BABE00',
                             fontWeight: 'bold',
                             ":hover": {
+                                backgroundColor: '#FAFF00',
+                                border: '2px solid #BABE00',
+                                color: '#BABE00'
+                            },
+                            ":active": {
                                 backgroundColor: '#BABE00',
                                 border: '2px solid #FAFF00',
                                 color: '#FAFF00',
@@ -146,10 +151,16 @@ function BufferDataDisplay({height, width}) {
                             color: '#AC7B00',
                             fontWeight: 'bold',
                             ":hover": {
+                                backgroundColor: '#FFB800',
+                                border: '2px solid #AC7B00',
+                                color: '#AC7B00',
+                            },
+                            ":active": {
                                 backgroundColor: '#AC7B00',
                                 border: '2px solid #FFB800',
                                 color: '#FFB800',
                             }
+                            
                         }}
                     >
                         COPY
