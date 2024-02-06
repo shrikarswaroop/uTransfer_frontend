@@ -1,4 +1,4 @@
-const origin = "http://localhost:8000";
+const origin = "https://utransfer-backend.onrender.com";
 
 const endpoints = {
     SIGNUP : `${origin}/v1/auth/register`,
