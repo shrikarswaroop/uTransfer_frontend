@@ -11,13 +11,11 @@ import Tooltip from '@mui/material/Tooltip';
 import { MenuItem } from '@mui/material';
 import { Typography } from '@mui/material';
 import ActionIndexContext from '../contexts/ActionIndexContext';
-
-const pages = ['Add Device', 'Login', 'Sign Up'];
-const settings = ['Change Device', 'Logout'];
+import Divider from '@mui/material/Divider';
 
 function NavBar({ loggedIn }) {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const {setActionIndex} = React.useContext(ActionIndexContext);
+  const { setActionIndex } = React.useContext(ActionIndexContext);
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -25,6 +23,26 @@ function NavBar({ loggedIn }) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const pages = ['Add Device', 'Login', 'Sign Up'];
+  const settings = [
+    {
+      name: window.sessionStorage.getItem('userId')
+    },
+    {
+      name: 'Change Device',
+      callback: () => { }
+    },
+    {
+      name: 'Logout',
+      callback: () => {
+        window.sessionStorage.removeItem('userId');
+        window.sessionStorage.removeItem('deviceId');
+        window.dispatchEvent(new Event("logout"));
+        handleCloseUserMenu();
+      }
+    }
+  ];
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#0192BF' }}>
@@ -53,7 +71,7 @@ function NavBar({ loggedIn }) {
                 <Button
                   key={page}
                   sx={{ mx: 1, my: 2, color: '#C7F2FF', display: 'block', fontWeight: 'bold', fontSize: 16 }}
-                  onClick={()=>{setActionIndex(index)}}
+                  onClick={() => { setActionIndex(index) }}
                 >
                   {page}
                 </Button>
@@ -67,7 +85,7 @@ function NavBar({ loggedIn }) {
             }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, float: 'right' }}>
-                  <Avatar alt="Jack Ryan" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt={window.sessionStorage.getItem('userId')} src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -86,11 +104,21 @@ function NavBar({ loggedIn }) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                {settings.slice(0, 1).map((setting, index) => {
+                  return (
+                    <MenuItem key={setting.name}>
+                      <Typography textAlign="center">User ID : <span style={{ color: '#0192BF', fontWeight: 'bold' }}>{setting.name}</span></Typography>
+                    </MenuItem>
+                  )
+                })}
+                <Divider key='divider' variant='middle' />
+                {settings.slice(1).map((setting, index) => {
+                  return (
+                    <MenuItem key={setting.name} onClick={setting.callback}>
+                      <Typography textAlign="center">{setting.name}</Typography>
+                    </MenuItem>
+                  );
+                })}
               </Menu>
             </Box>
           }

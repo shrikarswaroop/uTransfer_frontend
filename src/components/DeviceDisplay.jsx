@@ -2,9 +2,14 @@ import { Box, Chip, Paper, Typography } from "@mui/material";
 import CircleTwoToneIcon from '@mui/icons-material/CircleTwoTone';
 import { useContext } from "react";
 import DeviceCheckmaskContext from "../contexts/DeviceCheckmaskContext";
+import UserDeviceDataContext from "../contexts/UserDeviceDataContext";
+import CircularProgress from '@mui/material/CircularProgress';
+import BufferReceiverContext from "../contexts/BufferReceiverContext";
 
-function DeviceDisplay({ deviceData }) {
-    const {checkmask, setCheckmask} = useContext(DeviceCheckmaskContext);
+function DeviceDisplay() {
+    const { checkmask, setCheckmask } = useContext(DeviceCheckmaskContext);
+    const { deviceData } = useContext(UserDeviceDataContext);
+    const { bufferReceiverId, setBufferReceiverId } = useContext(BufferReceiverContext);
 
     return (
         <Box
@@ -16,7 +21,13 @@ function DeviceDisplay({ deviceData }) {
                 marginY: '5%',
             }}
         >
-            {deviceData.map((item, index) => (
+            {
+                deviceData.length === 0 &&
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '40%' }}>
+                    <CircularProgress sx={{ color: '#0192BF' }} />
+                </Box>
+            }
+            {deviceData.length > 0 && deviceData.map((item, index) => (
                 <Paper
                     elevation={0}
                     key={index}
@@ -34,7 +45,12 @@ function DeviceDisplay({ deviceData }) {
                             filter: (checkmask & (1 << index) ? 'brightness(90%)' : 'brightness(95%)')
                         }
                     }}
-                    onClick={() => { setCheckmask(1 << index) }}
+                    onClick={() => {
+                        setCheckmask(1 << index);
+                        setBufferReceiverId(
+                            item["deviceId"].slice(item["deviceId"].search(/\./) + 1)
+                        );
+                    }}
                 >
                     <Box
                         sx={{
@@ -50,7 +66,7 @@ function DeviceDisplay({ deviceData }) {
                                 marginY: 'auto',
                                 textAlign: 'center',
                                 color: '#878787'
-                            }}>{item["name"]}</Typography>
+                            }}>{item["deviceName"]}</Typography>
                         <Chip
                             sx={{
                                 flexGrow: 4,
@@ -59,14 +75,14 @@ function DeviceDisplay({ deviceData }) {
                                 color: '#878787'
                             }}
                             size="small"
-                            label={item["id"]} />
+                            label={item["deviceId"]} />
                         <CircleTwoToneIcon
                             sx={{
                                 fontSize: '12px',
                                 flexGrow: 1,
                                 marginTop: '2px',
                                 marginLeft: '2px',
-                                filter: `invert(68%) sepia(81%) 
+                                filter: `invert(68%) sepia(${item["status"] === "unknown" ? 1 : 81}%)
                                     saturate(4119%) hue-rotate(5deg) 
                                     brightness(${item["status"] === "dirty" ? 111 : 70}%) contrast(106%)`
                             }}></CircleTwoToneIcon>

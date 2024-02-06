@@ -12,39 +12,6 @@ import DeviceDisplay from "./DeviceDisplay";
 
 function SideBar({ isOpen, setOpen }) {
 
-    const deviceData = [
-        {
-            "name": "MacBook",
-            "id": "jack.macbook",
-            "status": "dirty"
-        },
-        {
-            "name": "Android",
-            "id": "jack.android",
-            "status": "clean"
-        },
-        {
-            "name": "Windows",
-            "id": "jack.windows",
-            "status": "dirty"
-        },
-        {
-            "name": "MacBook",
-            "id": "jack.macbook",
-            "status": "dirty"
-        },
-        {
-            "name": "Android",
-            "id": "jack.android",
-            "status": "clean"
-        },
-        {
-            "name": "Windows",
-            "id": "jack.windows",
-            "status": "dirty"
-        }
-    ]
-
     return (
         <Box
             sx={{
@@ -174,7 +141,7 @@ function SideBar({ isOpen, setOpen }) {
                                 </Typography>
                             </Box>
                         </Paper>
-                        <DeviceDisplay deviceData={deviceData} />
+                        <DeviceDisplay />
                     </Paper>
                 </Box>
             }
@@ -286,7 +253,7 @@ function SideBar({ isOpen, setOpen }) {
                             DEVICES
                         </Typography>
                     </Paper>
-                    <DeviceDisplay deviceData={deviceData} />
+                    <DeviceDisplay />
                 </Paper>
             </Box>
         </Box>
